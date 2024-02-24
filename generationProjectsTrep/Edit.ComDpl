@@ -1,0 +1,33 @@
+! Variables
+! ----------------------------------------------------------------------------------------------
+! Create variables
+int iRowId, iColumnId, iCompare;
+
+! Convert them
+sscanf(sRowId, '%i', iRowId);
+sscanf(sColumnId, '%i', iColumnId);
+! ----------------------------------------------------------------------------------------------
+
+! Vector data
+! ----------------------------------------------------------------------------------------------
+! Fix current clicked row index to make it usable for the vector
+iRowId -= 1;
+
+! Switch checkbox state (when double clicking)
+iCompare = strcmp(sColumnId, 'selectColumn');
+if(iCompare = 0){
+  oEditObject1.Insert(iRowId, iNewValue);
+}
+
+! Replace vector's pressed voltage for whatever the user puts
+iCompare = strcmp(sColumnId, 'voltageColumn');
+if(iCompare = 0){
+  oEditObject2.Insert(iRowId, dNewValue);
+}
+
+! Replace vector's pressed active power for whatever the user puts
+iCompare = strcmp(sColumnId, 'activePowerColumn');
+if(iCompare = 0){
+  oEditObject3.Insert(iRowId, dNewValue);
+}
+! ----------------------------------------------------------------------------------------------

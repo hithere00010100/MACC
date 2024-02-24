@@ -1,0 +1,112 @@
+! Variables
+! ----------------------------------------------------------------------------------------------
+! Create variables
+int i, iRowsNumber, iCheckboxState, a, iVoltagesNumber, canFillCells;
+double dActivePower, dVoltage;
+string sRowId;
+set aEditSet;
+object oReport, oMainNode, oAltNode;
+
+! Fill them
+oReport = this.GetParent();
+aEditSet.Add(vCheckboxes);
+aEditSet.Add(vVoltages);
+aEditSet.Add(vActivePowers);
+! ----------------------------------------------------------------------------------------------
+
+! Window and header
+! ----------------------------------------------------------------------------------------------
+! Set window specs
+oReport.SetTitle('Generation Projects');
+oReport.SetDialogSize(600, 450);
+
+! Set header
+oReport.AddHeader('Add and select generation projects to evaluate', '');
+! ----------------------------------------------------------------------------------------------
+
+! Buttons
+! ----------------------------------------------------------------------------------------------
+! Add project
+oReport.AddButton('add', 'Add', 100, 0, 1);
+
+! Delete selected projects
+oReport.AddButton('delete', 'Delete', 100, 0, 1);
+
+! Select all projects
+oReport.AddButton('selectAll', 'Select all', 100, 0, 1);
+
+! Deselect all projects
+oReport.AddButton('deselectAll', 'Deselect all', 100, 0, 1);
+
+! Execute selected projects
+oReport.AddButton('execute', 'Execute', 100, 1, 1);
+! ----------------------------------------------------------------------------------------------
+
+! Table basic structure
+! ----------------------------------------------------------------------------------------------
+oReport.AddTable('table');
+
+! Add table columns
+oReport.AddColumn('table', 'selectColumn', '', 30, 0, 0);
+oReport.AddColumn('table', 'mainNodeColumn', 'Main\nnode', 100, 0, 0);
+oReport.AddColumn('table', 'altNodeColumn', 'Alternative\nnode', 100, 0, 0);
+oReport.AddColumn('table', 'voltageColumn', 'V\n[kV]', 100, 0, 0);
+oReport.AddColumn('table', 'activePowerColumn', 'P\n[MW]', 100, 0, 0);
+! ----------------------------------------------------------------------------------------------
+
+! Table rows
+! ----------------------------------------------------------------------------------------------
+iRowsNumber = vRows.Size();
+iVoltagesNumber = vVoltages.Size();
+
+! Avoid filling voltage and active powers cells when user cancel the inputs
+if(iVoltagesNumber <> iRowsNumber){
+  mFlags.Update('canFillCells', 0);
+  
+  ! Alert the user so he can do something about something about it
+  MessageBox('Warning', 'Delete previous incomplete row');
+}
+
+! Allow cells filling
+else{
+  mFlags.Update('canFillCells', 1);
+}
+
+canFillCells = mFlags.GetValue('canFillCells');
+
+! Add as many rows as there are items in the vector
+for(i = 1; i <= iRowsNumber; i += 1){
+  ! Add a row with ID starting from 1
+  sRowId = sprintf('%i', i);
+  oReport.AddRow('table', sRowId);
+  
+  ! Fix current index to use for vector because it's zero based
+  a = i - 1;
+  
+  ! Fill first cell with a checkbox
+  iCheckboxState = vCheckboxes.Get(a);
+  oReport.SetCellValueToCheckbox('table', 'selectColumn', sRowId, iCheckboxState, 'Double click to change state', 2);
+  
+  ! Fill second and third cell with the selected node
+  oMainNode = vMainNodes.Get(a);
+  oAltNode = vAltNodes.Get(a);
+  
+  oReport.SetCellValueToObject('table', 'mainNodeColumn', sRowId, oMainNode);
+  oReport.SetCellValueToObject('table', 'altNodeColumn', sRowId, oAltNode);
+  
+  ! Fill voltage and active powers cells as long as the user doesn't cancel the inputs
+  if(canFillCells = 1){
+    dVoltage = vVoltages.Get(a);
+    oReport.SetCellValueToDouble('table', 'voltageColumn', sRowId, dVoltage, '%.2f');
+    
+    dActivePower = vActivePowers.Get(a);
+    oReport.SetCellValueToDouble('table', 'activePowerColumn', sRowId, dActivePower, '%.2f');
+  }
+  
+  ! Make checkboxes clickable and voltages and active powers editable
+  oReport.SetCellEdit('table', 'selectColumn', sRowId, aEditSet);
+  oReport.SetCellEdit('table', 'voltageColumn', sRowId, aEditSet);
+  oReport.SetCellEdit('table', 'activePowerColumn', sRowId, aEditSet);
+}
+! ----------------------------------------------------------------------------------------------
+
