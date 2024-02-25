@@ -1,5 +1,6 @@
 int iInitialPopulation;
 object oReport;
+set aEditSet;
 
 oReport = this.GetParent();
 
@@ -19,6 +20,11 @@ oReport.AddRow('table', 'populationRow');
 ! Fill first row with a string and a value obtained from a matrix
 oReport.SetCellValueToString('table', 'settingColumn', 'populationRow', 'Initial population');
 
-! 
 iInitialPopulation = tSettings.Get(1, 1);
 oReport.SetCellValueToInt('table', 'valueColumn', 'populationRow', iInitialPopulation);
+
+! Make matrix available as oEditObject1 on Edit DPL
+aEditSet.Add(tSettings);
+
+! Make value cell editable
+oReport.SetCellEdit('table', 'valueColumn', 'populationRow', aEditSet);

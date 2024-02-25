@@ -1,0 +1,13 @@
+int iRowId, iCompare;
+
+! Convert string to integer
+sscanf(sRowId, '%i', iRowId);
+
+! Fix clicked row index so it can start from 1 (not 0)
+iRowId += 1;
+
+iCompare = strcmp(sColumnId, 'valueColumn');
+if(iCompare = 0){
+  ! Set value given by the user when double clicking as the new value
+  oEditObject1.Set(iRowId, 1, iNewValue);
+}
