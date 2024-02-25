@@ -48,3 +48,6 @@ for(oEnabledNode = aEnabledNodes.First(); oEnabledNode; oEnabledNode = aEnabledN
 
   b += 1;
 }
+
+! Save changed matrix
+tParents.Save();
