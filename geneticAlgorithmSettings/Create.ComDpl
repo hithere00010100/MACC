@@ -1,0 +1,19 @@
+object oReport;
+
+oReport = this.GetParent();
+
+! Setup trep
+oReport.SetTitle('Genetic algorithm settings');
+oReport.SetDialogSize(600, 450);
+oReport.AddHeader('Double click to change setting value', '');
+
+! Add trep table and its columns
+oReport.AddTable('table');
+oReport.AddColumn('table', 'settingColumn', 'Setting');
+oReport.AddColumn('table', 'valueColumn', 'Value');
+
+! Add trep row and fill them with values
+oReport.AddRow('table', 'populationRow');
+
+oReport.SetCellValueToString('table', 'settingColumn', 'populationRow', 'Initial population');
+oReport.SetCellValueToInt('table', 'valueColumn', 'populationRow', 5);
