@@ -1,0 +1,11 @@
+int iParentsNumber, a;
+object oParent;
+
+! Get saved parents number
+iParentsNumber = vParents.Size();
+
+for(a = 0; a < iParentsNumber; a += 1){
+  ! Get every saved parent from its vector and delete it
+  oParent = vParents.Get(a);
+  Delete(oParent);
+}
