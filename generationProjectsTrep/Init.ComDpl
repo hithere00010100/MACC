@@ -1,3 +1,0 @@
-! Fill the conditions map
-mFlags.Clear();
-mFlags.Insert('canFillCells', 1);

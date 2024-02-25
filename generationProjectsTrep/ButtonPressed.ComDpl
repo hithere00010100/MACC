@@ -1,9 +1,9 @@
 ! Variables
 ! ----------------------------------------------------------------------------------------------
 ! Create variables
-int iCompare, iRowId, a, b, c, iRowsNumber, iCheckboxState, isFinished, iVoltagesNumber, iActivePowersNumber;
-int iDiff;
-double dActivePower, dProjectVoltage, dNodeVoltage;
+int iCompare, a, iRowsNumber, iCheckboxState, isFinished, iNewRowId;
+double dActivePower, dVoltage, dNodeVoltage;
+string sMainNodeName, sAltNodeName, sRowLabel;
 set aNodes, aMainNodes, aAltNodes, aFilteredNodes;
 object oMainNode, oAltNode, oNode;
 
@@ -17,24 +17,27 @@ aNodes = GetCalcRelevantObjects('*.ElmTerm');
 iCompare = strcmp(sButtonId, 'add');
 
 if(iCompare = 0){
-  ! Insert any element in the vector to simulate a new row
-  vRows.Insert(1);
-  ! Add a checkbox and set its default state
-  vCheckboxes.Insert(0);
+  ! Get matrix rows number and calculate the next row number
+  iRowsNumber = tValues.GetNumberOfRows();
+  iNewRowId = iRowsNumber + 1;
   
-  ! Append voltage and active power given by the user
-  input(dProjectVoltage, 'Define generation project voltage');
+  ! Add a new matrix row with a checkbox value of zero (first column)
+  tValues.Set(iNewRowId, 1, 0);
+  
+  ! Store voltage and active power defined by the user and put them as new values on the new
+  ! row in the matrix (second and third column)
+  input(dVoltage, 'Define generation project voltage');
   input(dActivePower, 'Define generation project active power');
   
-  vVoltages.Insert(dProjectVoltage);
-  vActivePowers.Insert(dActivePower);
+  tValues.Set(iNewRowId, 2, dVoltage);
+  tValues.Set(iNewRowId, 3, dActivePower);
   
   ! Go through every system node to store in a new set only the ones that have the same voltage given
   ! by the user
   for(oNode = aNodes.First(); oNode; oNode = aNodes.Next()){
     dNodeVoltage = oNode:e:uknom;
     
-    if(dNodeVoltage = dProjectVoltage){
+    if(dNodeVoltage = dVoltage){
       aFilteredNodes.Add(oNode);
     }
   }
@@ -43,12 +46,22 @@ if(iCompare = 0){
   aMainNodes = ShowModalSelectBrowser(aFilteredNodes, 'Select main node');
   aAltNodes = ShowModalSelectBrowser(aFilteredNodes, 'Select alternative node');
   
-  ! Append the first selected node in the corresponding vector
+  ! Get the first selected node of each menu
   oMainNode = aMainNodes.First();
   oAltNode = aAltNodes.First();
+
+  ! Concatenate both main node and alternative node names separated by a dash
+  sMainNodeName = oMainNode:loc_name;
+  sAltNodeName = oAltNode:loc_name;
+  sRowLabel = sprintf('%s - %s', sMainNodeName, sAltNodeName);
   
-  vMainNodes.Insert(oMainNode);
-  vAltNodes.Insert(oAltNode);
+  ! Set that concatenation as the new row label
+  tValues.SetRowLabel(iNewRowId, sRowLabel);
+  
+  ! Name every matrix column
+  tValues.SetColumnLabel(1, 'checkboxState');
+  tValues.SetColumnLabel(2, 'voltage');
+  tValues.SetColumnLabel(3, 'activePower');
 }
 ! ----------------------------------------------------------------------------------------------
 
@@ -58,34 +71,10 @@ if(iCompare = 0){
 iCompare = strcmp(sButtonId, 'delete');
 
 if(iCompare = 0){
-  iRowsNumber = vRows.Size();
-  iVoltagesNumber = vVoltages.Size();
-  iActivePowersNumber = vActivePowers.Size();
-  
-  ! Add new voltages to vVoltages to match the rows number
-  if(iVoltagesNumber < iRowsNumber){
-    ! Find how many voltages are missing in comparison with the rows number
-    iDiff = iRowsNumber - iVoltagesNumber;
-    
-    ! Fill those missing voltages with values of 1 kV
-    for(c = 1; c <= iDiff; c += 1){
-      vVoltages.Insert(1);
-    }
-  }
-  
-  ! Add new active powers to vActivePowers to match the rows number
-  if(iActivePowersNumber < iRowsNumber){
-    ! Find how many active powers are missing in comparison with the rows number
-    iDiff = iRowsNumber - iActivePowersNumber;
-    
-    ! Fill those missing active powers with values of 1 MW
-    for(c = 1; c <= iDiff; c += 1){
-      vActivePowers.Insert(1);
-    }
-  }
+  ! Get matrix rows number
+  iRowsNumber = tValues.GetNumberOfRows();
   
   a = 1;
-  b = 0;
   isFinished = 0;
   
   while(isFinished = 0){
@@ -94,25 +83,22 @@ if(iCompare = 0){
       isFinished = 1;
     }
     
-    ! Get every vector's item
-    iCheckboxState = vCheckboxes.Get(b);
+    ! Get every generation project checkbox state
+    iCheckboxState = tValues.Get(a, 1);
     
-    ! Remove every row and its values when its checkbox is ticked
     if(iCheckboxState = 1){
-      vRows.Remove(b);
-      vCheckboxes.Remove(b);
-      vMainNodes.Remove(b);
-      vAltNodes.Remove(b);
-      vVoltages.Remove(b);
-      vActivePowers.Remove(b);
+      ! Put at the end of the matrix the ticked rows
+      tValues.SortToColumn(1);
+      
+      ! Reduce rows number by one and resize the matrix to leave the ticked row behind
+      iRowsNumber -= 1;
+      tValues.Resize(iRowsNumber, 3);
+      
+      ! Evaluate next project which has now the row id of the delete row
+      a -= 1;
     }
     
-    ! Increase search space just in case the first row is not ticked
-    else{
-      b += 1;
-    }
-    
-    ! Increase current index to avoid infinite loop
+    ! Increase search space to avoid infinite loop
     a += 1;
   }
 }
@@ -125,10 +111,10 @@ iCompare = strcmp(sButtonId, 'selectAll');
 
 if(iCompare = 0){
   ! Tick all checkboxes
-  iRowsNumber = vCheckboxes.Size();
+  iRowsNumber = tValues.GetNumberOfRows();
   
-  for(a = 0; a < iRowsNumber; a += 1){
-    vCheckboxes.Insert(a, 1);
+  for(a = 1; a <= iRowsNumber; a += 1){
+    tValues.Set(a, 1, 1);
   }
 }
 ! ----------------------------------------------------------------------------------------------
@@ -140,10 +126,10 @@ iCompare = strcmp(sButtonId, 'deselectAll');
 
 if(iCompare = 0){
   ! Untick all checkboxes
-  iRowsNumber = vCheckboxes.Size();
+  iRowsNumber = tValues.GetNumberOfRows();
   
-  for(a = 0; a < iRowsNumber; a += 1){
-    vCheckboxes.Insert(a, 0);
+  for(a = 1; a <= iRowsNumber; a += 1){
+    tValues.Set(a, 1, 0);
   }
 }
 ! ----------------------------------------------------------------------------------------------
@@ -158,3 +144,5 @@ if(iCompare = 0){
 }
 ! ----------------------------------------------------------------------------------------------
 
+! Save all modifications that values matrix could have
+tValues.Save();
