@@ -1,7 +1,7 @@
-int iProjectsNumber, a, iEnabledNodesNumber, b;
+int iProjectsNumber, a, iEnabledNodesNumber, b, iParentsNumber;
 string sNodesPath, sProjectNodesNames, sMainNodeName, sAltNodeName, sMainNodeFullName, sMainNodePath, sEnabledNode;
 object oNode, oNodeGrid, oMainNode, oEnabledNode;
-set aNodes, aEnabledNodess;
+set aNodes, aEnabledNodes;
 
 ! Get all system nodes
 aNodes = GetCalcRelevantObjects('*.ElmTerm');
@@ -34,10 +34,11 @@ for(a = 1; a <= iProjectsNumber; a += 1){
   aEnabledNodes.Add(oMainNode);
 }
 
-! Based on the nodes number where are connection request, set initial parents matrix size
+! Based on the nodes number where are connection request and initial population number, set initial parents matrix size
+iParentsNumber = tSettings.Get(1, 1);
 iEnabledNodesNumber = aEnabledNodes.Count();
 
-tParents.Resize(0, iEnabledNodesNumber);
+tParents.Resize(iParentsNumber, iEnabledNodesNumber);
 
 b = 1;
 
