@@ -1,3 +1,4 @@
+int iInitialPopulation;
 object oReport;
 
 oReport = this.GetParent();
@@ -12,8 +13,12 @@ oReport.AddTable('table');
 oReport.AddColumn('table', 'settingColumn', 'Setting');
 oReport.AddColumn('table', 'valueColumn', 'Value');
 
-! Add trep row and fill them with values
+! Add trep row
 oReport.AddRow('table', 'populationRow');
 
+! Fill first row with a string and a value obtained from a matrix
 oReport.SetCellValueToString('table', 'settingColumn', 'populationRow', 'Initial population');
-oReport.SetCellValueToInt('table', 'valueColumn', 'populationRow', 5);
+
+! 
+iInitialPopulation = tSettings.Get(1, 1);
+oReport.SetCellValueToInt('table', 'valueColumn', 'populationRow', iInitialPopulation);
