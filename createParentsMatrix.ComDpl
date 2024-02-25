@@ -1,0 +1,50 @@
+int iProjectsNumber, a, iEnabledNodesNumber, b;
+string sNodesPath, sProjectNodesNames, sMainNodeName, sAltNodeName, sMainNodeFullName, sMainNodePath, sEnabledNode;
+object oNode, oNodeGrid, oMainNode, oEnabledNode;
+set aNodes, aEnabledNodess;
+
+! Get all system nodes
+aNodes = GetCalcRelevantObjects('*.ElmTerm');
+
+! Get connection requests (generation projects) number
+iProjectsNumber = tValues.GetNumberOfRows();
+
+! Get one of the nodes among all the system nodes to get the grid it is connected
+oNode = aNodes.First();
+oNodeGrid = oNode.GetNet();
+
+! Get grid full path
+sNodesPath = oNodeGrid.GetFullName();
+
+for(a = 1; a <= iProjectsNumber; a += 1){
+  ! Get every connection request row label (which contains main node and alternative node names)
+  sProjectNodesNames = tValues.GetRowLabel(a);
+  
+  ! Isolate main node name from alternative node name
+  sscanfsep(sProjectNodesNames, '%s %s', sMainNodeName, sAltNodeName, '-');
+  
+  ! Complete main node name with its extension
+  sMainNodeFullName = sprintf('%s.ElmTerm', sMainNodeName);
+  
+  ! Concatenate grid path with the main node full name
+  sMainNodePath = sprintf('%s\\%s', sNodesPath, sMainNodeFullName);
+  
+  ! Using every main node path, grab its object and add it to a set (no duplicates)
+  oMainNode = this.SearchObject(sMainNodePath);
+  aEnabledNodes.Add(oMainNode);
+}
+
+! Based on the nodes number where are connection request, set initial parents matrix size
+iEnabledNodesNumber = aEnabledNodes.Count();
+
+tParents.Resize(0, iEnabledNodesNumber);
+
+b = 1;
+
+for(oEnabledNode = aEnabledNodes.First(); oEnabledNode; oEnabledNode = aEnabledNodes.Next()){
+  ! Get node name and set it as every column label
+  sEnabledNode = oEnabledNode:loc_name;
+  tParents.SetColumnLabel(b, sEnabledNode);
+
+  b += 1;
+}
