@@ -53,7 +53,7 @@ if(iCompare = 0){
   ! Concatenate both main node and alternative node names separated by a dash
   sMainNodeName = oMainNode:loc_name;
   sAltNodeName = oAltNode:loc_name;
-  sRowLabel = sprintf('%s - %s', sMainNodeName, sAltNodeName);
+  sRowLabel = sprintf('%s-%s', sMainNodeName, sAltNodeName);
   
   ! Set that concatenation as the new row label
   tValues.SetRowLabel(iNewRowId, sRowLabel);
