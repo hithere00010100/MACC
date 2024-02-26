@@ -1,7 +1,7 @@
 ! Variables
 ! ----------------------------------------------------------------------------------------------
 ! Create variables
-int iCompare, a, iRowsNumber, iCheckboxState, isFinished, iNewRowId;
+int iCompare, a, iRowsNumber, iCheckboxState, isFinished, iNewRowId, iProjectId, iNextProjectId;
 double dActivePower, dVoltage, dNodeVoltage;
 string sMainNodeName, sAltNodeName, sRowLabel;
 set aNodes, aMainNodes, aAltNodes, aFilteredNodes;
@@ -24,13 +24,23 @@ if(iCompare = 0){
   ! Add a new matrix row with a checkbox value of zero (first column)
   tValues.Set(iNewRowId, 1, 0);
   
+  ! Get current ID based on how many rows the counter has and set it as the new project ID
+  iProjectId = vCounter.Size();
+  tValues.Set(iNewRowId, 2, iProjectId);
+  
+  ! Step up ID for a future new project
+  iNextProjectId = iProjectId + 1;
+  vCounter.Resize(iNextProjectId);
+  
+  vCounter.Save();
+  
   ! Store voltage and active power defined by the user and put them as new values on the new
-  ! row in the matrix (second and third column)
+  ! row in the matrix (third and fourth column)
   input(dVoltage, 'Define generation project voltage');
   input(dActivePower, 'Define generation project active power');
   
-  tValues.Set(iNewRowId, 2, dVoltage);
-  tValues.Set(iNewRowId, 3, dActivePower);
+  tValues.Set(iNewRowId, 3, dVoltage);
+  tValues.Set(iNewRowId, 4, dActivePower);
   
   ! Go through every system node to store in a new set only the ones that have the same voltage given
   ! by the user
@@ -60,8 +70,9 @@ if(iCompare = 0){
   
   ! Name every matrix column
   tValues.SetColumnLabel(1, 'checkboxState');
-  tValues.SetColumnLabel(2, 'voltage');
-  tValues.SetColumnLabel(3, 'activePower');
+  tValues.SetColumnLabel(2, 'id');
+  tValues.SetColumnLabel(3, 'voltage');
+  tValues.SetColumnLabel(4, 'activePower');
 }
 ! ----------------------------------------------------------------------------------------------
 

@@ -1,11 +1,11 @@
 ! Variables
 ! ----------------------------------------------------------------------------------------------
 ! Create variables
-int i, iRowsNumber, iCheckboxState, a, iVoltagesNumber, canFillCells;
+int i, iRowsNumber, iCheckboxState, iProjectId;
 double dActivePower, dVoltage;
 string sRowId, sRowLabel, sMainNodeName, sAltNodeName;
 set aEditSet;
-object oReport, oMainNode, oAltNode;
+object oReport;
 
 ! Fill them
 oReport = this.GetParent();
@@ -46,6 +46,7 @@ oReport.AddTable('table');
 
 ! Add table columns
 oReport.AddColumn('table', 'selectColumn', '', 30, 0, 0);
+oReport.AddColumn('table', 'idColumn', 'ID', 30, 0, 0);
 oReport.AddColumn('table', 'mainNodeColumn', 'Main\nnode', 100, 0, 0);
 oReport.AddColumn('table', 'altNodeColumn', 'Alternative\nnode', 100, 0, 0);
 oReport.AddColumn('table', 'voltageColumn', 'V\n[kV]', 100, 0, 0);
@@ -54,9 +55,10 @@ oReport.AddColumn('table', 'activePowerColumn', 'P\n[MW]', 100, 0, 0);
 
 ! Table rows
 ! ----------------------------------------------------------------------------------------------
+! Get matrix rows number
 iRowsNumber = tValues.GetNumberOfRows();
 
-! Add as many rows as there are items in the vector
+! Add as many rows as there are rows in the matrix
 for(i = 1; i <= iRowsNumber; i += 1){
   ! Add a row with ID starting from 1
   sRowId = sprintf('%i', i);
@@ -66,17 +68,22 @@ for(i = 1; i <= iRowsNumber; i += 1){
   iCheckboxState = tValues.Get(i, 1);
   oReport.SetCellValueToCheckbox('table', 'selectColumn', sRowId, iCheckboxState, 'Double click to change state', 2);
   
-  ! Fill second and third cell with the selected node
+  ! Fill second cell with the id
+  iProjectId = tValues.Get(i, 2);
+  oReport.SetCellValueToInt('table', 'idColumn', sRowId, iProjectId);
+  
+  ! Fill third and fourth cell with the selected node (contained in the matrix row label)
   sRowLabel = tValues.GetRowLabel(i);
   sscanfsep(sRowLabel, '%s %s', sMainNodeName, sAltNodeName, '-');
   
   oReport.SetCellValueToString('table', 'mainNodeColumn', sRowId, sMainNodeName );
   oReport.SetCellValueToString('table', 'altNodeColumn', sRowId, sAltNodeName);
   
-  dVoltage = tValues.Get(i, 2);
+  ! Fill next cells with the generation project voltage and active power
+  dVoltage = tValues.Get(i, 3);
   oReport.SetCellValueToDouble('table', 'voltageColumn', sRowId, dVoltage, '%.2f');
   
-  dActivePower = tValues.Get(i, 3);
+  dActivePower = tValues.Get(i, 4);
   oReport.SetCellValueToDouble('table', 'activePowerColumn', sRowId, dActivePower, '%.2f');
   
   ! Make checkboxes clickable and voltages and active powers editable
