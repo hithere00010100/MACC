@@ -24,13 +24,13 @@ if(iCompare = 0){
   ! Add a new matrix row with a checkbox value of zero (first column)
   tValues.Set(iNewRowId, 1, 0);
   
-  ! Get current ID based on how many rows the counter has and set it as the new project ID
-  iProjectId = vCounter.Size();
+  ! Get current ID based on the first vector element and set it as the new project ID
+  iProjectId = vCounter.Get(1);
   tValues.Set(iNewRowId, 2, iProjectId);
   
-  ! Step up ID for a future new project
+  ! Step up ID for a future new project and update it on the vector
   iNextProjectId = iProjectId + 1;
-  vCounter.Resize(iNextProjectId);
+  vCounter.Set(1, iNextProjectId);
   
   vCounter.Save();
   
@@ -103,7 +103,7 @@ if(iCompare = 0){
       
       ! Reduce rows number by one and resize the matrix to leave the ticked row behind
       iRowsNumber -= 1;
-      tValues.Resize(iRowsNumber, 3);
+      tValues.Resize(iRowsNumber, 4);
       
       ! Evaluate next project which has now the row id of the delete row
       a -= 1;

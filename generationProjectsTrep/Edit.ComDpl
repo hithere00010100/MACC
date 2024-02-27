@@ -19,13 +19,13 @@ if(iCompare = 0){
 ! Replace vector's pressed voltage for whatever the user puts
 iCompare = strcmp(sColumnId, 'voltageColumn');
 if(iCompare = 0){
-  oEditObject1.Set(iRowId, 2, dNewValue);
+  oEditObject1.Set(iRowId, 3, dNewValue);
 }
 
 ! Replace vector's pressed active power for whatever the user puts
 iCompare = strcmp(sColumnId, 'activePowerColumn');
 if(iCompare = 0){
-  oEditObject1.Set(iRowId, 3, dNewValue);
+  oEditObject1.Set(iRowId, 4, dNewValue);
 }
 
 oEditObject1.Save();
