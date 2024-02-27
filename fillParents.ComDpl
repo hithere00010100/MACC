@@ -1,0 +1,44 @@
+int iEnabledNodesNumber, iParentsNumber, a, b, iCompare, iProjectId, iEnabledNodeProjectsNumber;
+int iSelectedProjectIndex, iSelectedProject, c, iProjectsNumber;
+string sCurrentEnabledNodeName, sNodesNames, sMainNodeName, sAltNodeName;
+
+iEnabledNodesNumber = tParents.GetNumberOfColumns();
+iProjectsNumber = tValues.GetNumberOfRows();
+iParentsNumber = tParents.GetNumberOfRows();
+
+for(c = 1; c <= iParentsNumber; c += 1){
+  for(a = 1; a <= iEnabledNodesNumber; a += 1){
+    ! Go through every node that has connection requests
+    sCurrentEnabledNodeName = tParents.GetColumnLabel(a);
+    
+    for(b = 1; b <= iProjectsNumber; b += 1){
+      ! Get every generation project main node (but first isolate it from alternative node)
+      sNodesNames = tValues.GetRowLabel(b);
+      sscanfsep(sNodesNames, '%s %s', sMainNodeName, sAltNodeName, '-');
+      
+      ! Isolate all generation projects that would like to connect to this node under analysis
+      iCompare = strcmp(sCurrentEnabledNodeName, sMainNodeName);
+      
+      if(iCompare = 0){
+        ! Store isolated generation project id into a vector
+        iProjectId = tValues.Get(b, 2);
+        
+        vEnabledNodeProjects.Insert(iProjectId);
+      }
+    }
+    
+    ! Get how many connection requests are there for this node under analysis
+    iEnabledNodeProjectsNumber = vEnabledNodeProjects.Size();
+    
+    ! Select one of those connection requests randomly but first fix index to make it usable for vectors
+    iSelectedProjectIndex = RndUnifInt(1, iEnabledNodeProjectsNumber);
+    iSelectedProjectIndex -= 1;
+    
+    ! Get selected generation project ID and inserted in the parent matrix
+    iSelectedProject = vEnabledNodeProjects.Get(iSelectedProjectIndex);
+    tParents.Set(c, a, iSelectedProject);
+    
+    ! Delete isolated generations projects to store new ones for the next node
+    vEnabledNodeProjects.Clear();
+  }
+}
