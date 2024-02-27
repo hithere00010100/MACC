@@ -52,3 +52,5 @@ for(oEnabledNode = aEnabledNodes.First(); oEnabledNode; oEnabledNode = aEnabledN
 
 ! Save changed matrix
 tParents.Save();
+
+fillParents.Execute();
