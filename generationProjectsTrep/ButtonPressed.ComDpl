@@ -112,6 +112,9 @@ if(iCompare = 0){
     ! Increase search space to avoid infinite loop
     a += 1;
   }
+  
+  ! Order generation projects by ID after a deletion
+  tValues.SortToColumn(2);
 }
 ! ----------------------------------------------------------------------------------------------
 
