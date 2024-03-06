@@ -3,7 +3,6 @@
 int iContingenciesNumber, iProjectsNumber, iCheckboxState, a, b, c, d;
 double dValue;
 string sColumnName, sRowId;
-string sTrash1, sTrash2, sTrash3, sTrash4, sTrash5, sTrash6;
 object oReport, oContingency, oMainNode;
 
 oReport = this.GetParent();
