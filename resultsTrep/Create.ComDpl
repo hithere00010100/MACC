@@ -1,0 +1,65 @@
+! Variables
+! ---------------------------------------------------------------------------------------------------------------
+int iContingenciesNumber, iProjectsNumber, iCheckboxState, a, b, c, d;
+double dValue;
+string sColumnName, sRowId;
+string sTrash1, sTrash2, sTrash3, sTrash4, sTrash5, sTrash6;
+object oReport, oContingency, oMainNode;
+
+oReport = this.GetParent();
+! ---------------------------------------------------------------------------------------------------------------
+
+! Window
+! ---------------------------------------------------------------------------------------------------------------
+oReport.SetTitle('Results');
+! Set minimum window width
+oReport.SetDialogSize(600, 450);
+! ---------------------------------------------------------------------------------------------------------------
+
+! Trep
+! ---------------------------------------------------------------------------------------------------------------
+createResultMatrix.Execute();
+
+oReport.AddTable('table');
+
+oReport.AddColumn('table', 'executedNodes', 'Executed nodes');
+
+! Get selected contingencies number
+iContingenciesNumber = vContingencies.Size();
+a = 1;
+
+for(d = 0; d < iContingenciesNumber; d += 1){
+  ! Go through every currently selected contingency
+  oContingency = vContingencies.Get(d);
+  
+  ! Store contingency name as a string to create its column
+  sColumnName = oContingency:loc_name;
+  oReport.AddColumn('table', sColumnName, sColumnName, -1, 0, 0);
+  
+  ! Get all generation projects
+  iProjectsNumber = vCheckboxes.Size();
+  
+  ! For every project read its checkbox value
+  for(b = 0; b <iProjectsNumber ; b += 1){
+    iCheckboxState = vCheckboxes.Get(b);
+    
+    if(iCheckboxState = 1){
+      sRowId = sprintf('%i', b);
+      oReport.AddRow('table', sRowId);
+      
+      ! Get main nodes for the selected generation project and print them on the rows
+      oMainNode = vMainNodes.Get(b);
+      oReport.SetCellValueToObject('table', 'executedNodes', sRowId, oMainNode);
+
+      ! Fix index to make it usable on matrix
+      c = b + 1;
+      
+      ! Get values from the matrix and fill the trep
+      dValue = tResults.Get(c, a);
+      oReport.SetCellValueToDouble('table', sColumnName, sRowId, dValue);
+    }
+  }
+  
+  a += 1;
+}
+! ---------------------------------------------------------------------------------------------------------------
