@@ -2,14 +2,14 @@ int iEnabledNodesNumber, iParentsNumber, a, b, iCompare, iProjectId, iEnabledNod
 int iSelectedProjectIndex, iSelectedProject, c, iProjectsNumber;
 string sCurrentEnabledNodeName, sNodesNames, sMainNodeName, sAltNodeName;
 
-iEnabledNodesNumber = tParents.GetNumberOfColumns();
+iEnabledNodesNumber = tChosenProjects.GetNumberOfColumns();
 iProjectsNumber = tValues.GetNumberOfRows();
-iParentsNumber = tParents.GetNumberOfRows();
+iParentsNumber = tChosenProjects.GetNumberOfRows();
 
 for(c = 1; c <= iParentsNumber; c += 1){
   for(a = 1; a <= iEnabledNodesNumber; a += 1){
     ! Go through every node that has connection requests
-    sCurrentEnabledNodeName = tParents.GetColumnLabel(a);
+    sCurrentEnabledNodeName = tChosenProjects.GetColumnLabel(a);
     
     for(b = 1; b <= iProjectsNumber; b += 1){
       ! Get every generation project main node (but first isolate it from alternative node)
@@ -36,7 +36,7 @@ for(c = 1; c <= iParentsNumber; c += 1){
     
     ! Get selected generation project ID and inserted in the parent matrix
     iSelectedProject = vEnabledNodeProjects.Get(iSelectedProjectIndex);
-    tParents.Set(c, a, iSelectedProject);
+    tChosenProjects.Set(c, a, iSelectedProject);
     
     ! Delete isolated generations projects to store new ones for the next node
     vEnabledNodeProjects.Clear();

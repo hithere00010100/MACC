@@ -38,19 +38,19 @@ for(a = 1; a <= iProjectsNumber; a += 1){
 iParentsNumber = tSettings.Get(1, 1);
 iEnabledNodesNumber = aEnabledNodes.Count();
 
-tParents.Resize(iParentsNumber, iEnabledNodesNumber);
+tChosenProjects.Resize(iParentsNumber, iEnabledNodesNumber);
 
 b = 1;
 
 for(oEnabledNode = aEnabledNodes.First(); oEnabledNode; oEnabledNode = aEnabledNodes.Next()){
   ! Get node name and set it as every column label
   sEnabledNode = oEnabledNode:loc_name;
-  tParents.SetColumnLabel(b, sEnabledNode);
+  tChosenProjects.SetColumnLabel(b, sEnabledNode);
 
   b += 1;
 }
 
 ! Save changed matrix
-tParents.Save();
+tChosenProjects.Save();
 
-fillParents.Execute();
+ChooseProjects.Execute();
