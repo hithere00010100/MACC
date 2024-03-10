@@ -26,6 +26,9 @@ for(a = 1; a <= iChosenProjectsNumber; a += 1){
   
   if(oChosenProjectGenerator = NULL){
     ! Create the generator if no generator exists with that name
-    oMainGrid.CreateObject('ElmGenstat', sChosenProjectGeneratorLabel);
+    oChosenProjectGenerator = oMainGrid.CreateObject('ElmGenstat', sChosenProjectGeneratorLabel);
+    
+    ! Add created generator into a vector
+    vCreatedGenerators.Insert(oChosenProjectGenerator);
   }
 }
