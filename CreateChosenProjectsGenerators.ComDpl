@@ -1,0 +1,31 @@
+int iChosenProjectsNumber, a, iChosenProjectId;
+string sChosenProjectGeneratorLabel;
+object oSystemFolder, oMainGrid, oChosenProjectGenerator;
+set aSystemGrids, aSystemElements;
+
+! Get number of chosen projects
+iChosenProjectsNumber = tChosenProjects.GetNumberOfColumns();
+
+! Get all the system grids
+oSystemFolder = GetProjectFolder('netdat');
+aSystemGrids = oSystemFolder.GetContents('*.ElmNet');
+
+! From the main system grid, store all generators, nodes, transformers, lines, loads, etc
+oMainGrid = aSystemGrids.First();
+aSystemElements = oMainGrid.GetContents();
+
+for(a = 1; a <= iChosenProjectsNumber; a += 1){
+  ! Get every chosen project ID
+  iChosenProjectId = tChosenProjects.Get(iSolutionToEvaluate, a); 
+  
+  ! With the chosen project ID, create a label for the generator
+  sChosenProjectGeneratorLabel = sprintf('Project %i generator', iChosenProjectId);
+  
+  ! Check if a generator exists with that label
+  oChosenProjectGenerator = aSystemElements.FirstFilt(sChosenProjectGeneratorLabel);
+  
+  if(oChosenProjectGenerator = NULL){
+    ! Create the generator if no generator exists with that name
+    oMainGrid.CreateObject('ElmGenstat', sChosenProjectGeneratorLabel);
+  }
+}
