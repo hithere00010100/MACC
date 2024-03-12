@@ -1,0 +1,18 @@
+int iCreatedGeneratorsNumber, a;
+object oChosenProjectGenerator;
+
+! Find how many chosen projects generadores were created
+iCreatedGeneratorsNumber = vCreatedGenerators.Size();
+
+for(a = 0; a < iCreatedGeneratorsNumber; a += 1){
+  ! Grab every chosen project generator
+  oChosenProjectGenerator = vCreatedGenerators.Get(a);
+  
+  ! Set that generator as PV node, with a power and a voltage defined by code; set its power factor
+  ! and rated aparent power (generator capacity)
+  oChosenProjectGenerator:e:av_mode = 'constv';
+  oChosenProjectGenerator:e:pgini = 500;
+  oChosenProjectGenerator:e:usetp = 1;
+  oChosenProjectGenerator:e:cosn = 1;
+  oChosenProjectGenerator:e:sgn = 500;
+}
