@@ -1,0 +1,14 @@
+int iCreatedGeneratorsNumber, a;
+object oChosenProjectGenerator;
+
+! Find how many chosen projects generators were created
+iCreatedGeneratorsNumber = vCreatedGenerators.Size();
+
+for(a = 0; a < iCreatedGeneratorsNumber; a += 1){
+  ! Get every created chosen project generator and delete its object associated
+  oChosenProjectGenerator = vCreatedGenerators.Get(a);
+  Delete(oChosenProjectGenerator);
+}
+
+! Clear those deleted generators from the vector
+vCreatedGenerators.Clear();
