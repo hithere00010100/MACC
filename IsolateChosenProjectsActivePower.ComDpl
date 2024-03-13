@@ -1,0 +1,43 @@
+int iParentsNumber, iChosenProjectsNumber, iProjectsNumber, a, b, iChosenProjectId, c;
+int iProjectId;
+double dChosenProjectActivePower;
+string sColumnLabel, sRowLabel;
+
+! Find how many parents and chosen projects are
+iParentsNumber = tChosenProjects.GetNumberOfRows();
+iChosenProjectsNumber = tChosenProjects.GetNumberOfColumns();
+
+! Find total connection requests
+iProjectsNumber = tValues.GetNumberOfRows();
+
+for(a = 1; a <= iParentsNumber; a += 1){
+  for(b = 1; b <= iChosenProjectsNumber; b +=1){
+    ! Grab every chosen project ID (of every parent) to compare it later
+    iChosenProjectId = tChosenProjects.Get(a, b);
+    
+    for(c = 1; c <= iProjectsNumber; c += 1){
+      ! Get every connection request ID
+      iProjectId = tValues.Get(c, 2);
+      
+      if(iProjectId = iChosenProjectId){
+        ! Go through every connection request and grab the active power only if current chosen
+        ! project ID is the same
+        dChosenProjectActivePower = tValues.Get(c, 4);
+        
+        ! Set that active power as a active powers matrix value
+        tChosenProjectsActivePowers.Set(a, b, dChosenProjectActivePower);
+      }
+    }
+    
+    ! Put some names to the active powers matrix columns
+    sColumnLabel = 'Active power';
+    tChosenProjectsActivePowers.SetColumnLabel(b, sColumnLabel);
+    
+    ! Put some names to the active powers matrix rows
+    sRowLabel = sprintf('Parent %i', a);
+    tChosenProjectsActivePowers.SetRowLabel(a, sRowLabel);
+  }
+}
+
+! Save active powers matrix
+tChosenProjectsActivePowers.Save();
