@@ -1,0 +1,24 @@
+!! Variables
+!! --------------------------------------------------------------------------------------------------
+!int iCreatedVectorsNumber, a;
+!object oVector;
+!! --------------------------------------------------------------------------------------------------
+!
+!! Setup startup
+!! --------------------------------------------------------------------------------------------------
+!! Open first trep
+!generationProjects.Execute();
+!
+!! Delete every created contingencies vector from its container (set)
+!iCreatedVectorsNumber = vContingenciesVector.Size();
+!
+!for(a = 0; a < iCreatedVectorsNumber; a += 1){
+!  oVector = vContingenciesVector.Get(a);
+!    
+!  Delete(oVector);
+!}
+!! --------------------------------------------------------------------------------------------------
+
+ClearOutputWindow();
+
+CreateChosenProjectsMatrix.Execute();

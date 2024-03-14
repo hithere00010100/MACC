@@ -27,3 +27,5 @@ for(a = 0; a < iCreatedGeneratorsNumber; a += 1){
   oChosenProjectGenerator:e:pgini = dChosenProjectActivePower;
   oChosenProjectGenerator:e:sgn = dChosenProjectActivePower;
 }
+
+printf('\cmChosen projects generators have been configured\n');

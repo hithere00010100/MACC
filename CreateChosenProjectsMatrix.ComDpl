@@ -53,4 +53,6 @@ for(oEnabledNode = aEnabledNodes.First(); oEnabledNode; oEnabledNode = aEnabledN
 ! Save changed matrix
 tChosenProjects.Save();
 
+printf('\cmChosen projects matrix was created\n');
+
 ChooseProjects.Execute();

@@ -16,7 +16,7 @@ aSystemElements = oMainGrid.GetContents();
 
 for(a = 1; a <= iChosenProjectsNumber; a += 1){
   ! Get every chosen project ID
-  iChosenProjectId = tChosenProjects.Get(iSolutionToEvaluate, a); 
+  iChosenProjectId = tChosenProjects.Get(iParentToEvaluate, a); 
   
   ! With the chosen project ID, create a label for the generator
   sChosenProjectGeneratorLabel = sprintf('Project %i generator', iChosenProjectId);
@@ -32,3 +32,7 @@ for(a = 1; a <= iChosenProjectsNumber; a += 1){
     vCreatedGenerators.Insert(oChosenProjectGenerator);
   }
 }
+
+printf('\cmChosen projects generators were created\n');
+
+CreateAndFillChosenProjectsPowersMatrix.Execute();
