@@ -1,18 +1,29 @@
-int iCreatedGeneratorsNumber, a;
+int iCreatedGeneratorsNumber, iParentToEvaluate, a, b;
+double dChosenProjectActivePower;
 object oChosenProjectGenerator;
 
 ! Find how many chosen projects generadores were created
 iCreatedGeneratorsNumber = vCreatedGenerators.Size();
 
+! Find the parent under evaluation
+CreateChosenProjectsGenerators.GetInputParameterInt('iParentToEvaluate', iParentToEvaluate);
+
 for(a = 0; a < iCreatedGeneratorsNumber; a += 1){
   ! Grab every chosen project generator
   oChosenProjectGenerator = vCreatedGenerators.Get(a);
   
-  ! Set that generator as PV node, with a power and a voltage defined by code; set its power factor
-  ! and rated aparent power (generator capacity)
+  ! Set that generator as PV node, with a voltage defined by code and set its power factor
   oChosenProjectGenerator:e:av_mode = 'constv';
-  oChosenProjectGenerator:e:pgini = 500;
   oChosenProjectGenerator:e:usetp = 1;
   oChosenProjectGenerator:e:cosn = 1;
-  oChosenProjectGenerator:e:sgn = 500;
+  
+  ! Fix vector index to make it usable on a matrix
+  b = a + 1;
+  
+  ! Grab every chosen project active power of the parent under evaluation
+  dChosenProjectActivePower = tChosenProjectsActivePowers.Get(iParentToEvaluate, b);
+  
+  ! Set generator active power and rated power (capacity)
+  oChosenProjectGenerator:e:pgini = dChosenProjectActivePower;
+  oChosenProjectGenerator:e:sgn = dChosenProjectActivePower;
 }
