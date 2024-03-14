@@ -1,0 +1,19 @@
+ClearOutputWindow();
+
+CreateChosenProjectsMatrix.Execute();
+printf('\cmChosen projects matrix was created\n');
+
+ChoosenProjects.Execute();
+printf('\cmChosen projects matrix has been filled\n');
+
+DeleteChosenProjectsGenerators.Execute();
+printf('\cmPreviously created generators were deleted\n');
+
+CreateChosenProjectsGenerators.Execute();
+printf('\cmChosen projects generators were created\n');
+
+IsolateChosenProjectsActivePower.Execute();
+printf('\cmChosen projects active powers matrix has been created and filled\n');
+
+SetupChosenProjectsGenerators.Execute();
+printf('\cmChosen projects generators have been configured\n');
