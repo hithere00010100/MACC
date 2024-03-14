@@ -1,2 +1,4 @@
 ! Calculate load flows
 LoadFlow.Execute();
+
+printf('\cmLoad flows have been estimated\n');
