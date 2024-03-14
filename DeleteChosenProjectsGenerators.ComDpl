@@ -12,7 +12,3 @@ for(a = 0; a < iCreatedGeneratorsNumber; a += 1){
 
 ! Clear those deleted generators from the vector
 vCreatedGenerators.Clear();
-
-printf('\cmPreviously created generators were deleted\n');
-
-CreateChosenProjectsGenerators.Execute();

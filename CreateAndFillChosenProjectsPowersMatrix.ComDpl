@@ -43,5 +43,3 @@ for(a = 1; a <= iParentsNumber; a += 1){
 tChosenProjectsActivePowers.Save();
 
 printf('\cmChosen projects active powers matrix was created and filled\n');
-
-SetupChosenProjectsGenerators.Execute();

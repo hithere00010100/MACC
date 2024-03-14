@@ -32,7 +32,3 @@ for(a = 1; a <= iChosenProjectsNumber; a += 1){
     vCreatedGenerators.Insert(oChosenProjectGenerator);
   }
 }
-
-printf('\cmChosen projects generators were created\n');
-
-CreateAndFillChosenProjectsPowersMatrix.Execute();

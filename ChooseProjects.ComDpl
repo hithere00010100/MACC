@@ -45,4 +45,4 @@ for(c = 1; c <= iParentsNumber; c += 1){
 
 printf('\cmProjects have been chosen\n');
 
-DeleteChosenProjectsGenerators.Execute();
+CreateAndFillChosenProjectsPowersMatrix.Execute();
