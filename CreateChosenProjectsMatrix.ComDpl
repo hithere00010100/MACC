@@ -43,6 +43,8 @@ tChosenProjects.Resize(iParentsNumber, iEnabledNodesNumber);
 b = 1;
 
 for(oEnabledNode = aEnabledNodes.First(); oEnabledNode; oEnabledNode = aEnabledNodes.Next()){
+  vProjectsNodes.Insert(oEnabledNode);
+  
   ! Get node name and set it as every column label
   sEnabledNode = oEnabledNode:loc_name;
   tChosenProjects.SetColumnLabel(b, sEnabledNode);

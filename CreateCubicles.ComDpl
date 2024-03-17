@@ -1,0 +1,25 @@
+int iConnectionNodesNumber, a, b, iProjectId;
+string sProjectCubicleName;
+object oProjectNode, oProjectCubicle;
+set aProjectNodeCubicles;
+
+! Get number of nodes where there are connection requests
+iConnectionNodesNumber = vProjectsNodes.Size();
+
+for(a = 0; a < iConnectionNodesNumber; a += 1){
+  ! Store that node where there are connection requests and store all its cubicles
+  oProjectNode = vProjectsNodes.Get(a);
+  aProjectNodeCubicles = oProjectNode.GetContents('*.StaCubic');
+  
+  b = a + 1;
+  
+  ! Create a new cubicle with the project name and ID as prefix but check first if that cubicle doesn't exists
+  iProjectId = tChosenProjects.Get(iCurrentParent, b);
+  
+  sProjectCubicleName = sprintf('Project %i cubicle', iProjectId);
+  oProjectCubicle = aProjectNodeCubicles.FirstFilt(sProjectCubicleName);
+  
+  if(oProjectCubicle = NULL){
+    oProjectCubicle = oProjectNode.CreateObject('StaCubic', sProjectCubicleName);
+  }
+}
