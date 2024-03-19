@@ -42,6 +42,8 @@ tChosenProjects.Resize(iParentsNumber, iEnabledNodesNumber);
 
 b = 1;
 
+vProjectsNodes.Clear();
+
 for(oEnabledNode = aEnabledNodes.First(); oEnabledNode; oEnabledNode = aEnabledNodes.Next()){
   vProjectsNodes.Insert(oEnabledNode);
   
