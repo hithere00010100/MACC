@@ -21,4 +21,10 @@
 
 ClearOutputWindow();
 
-CreateChosenProjectsMatrix.Execute();
+CreateParentsMatrix.Execute();
+ChooseProjects.Execute();
+IsolateActivePowers.Execute();
+DeleteGenerators.Execute();
+CreateGenerators.Execute();
+SetupGenerators.Execute();
+CreateCubicles.Execute();
