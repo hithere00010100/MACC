@@ -14,7 +14,7 @@
 !
 !for(a = 0; a < iCreatedVectorsNumber; a += 1){
 !  oVector = vContingenciesVector.Get(a);
-!    
+!  
 !  Delete(oVector);
 !}
 !! --------------------------------------------------------------------------------------------------
@@ -27,4 +27,5 @@ IsolateActivePowers.Execute();
 DeleteGenerators.Execute();
 CreateGenerators.Execute();
 SetupGenerators.Execute();
+DeleteCubicles.Execute();
 CreateCubicles.Execute();

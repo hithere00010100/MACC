@@ -1,0 +1,15 @@
+int iCubiclesToDeleteNumber, a;
+object oCubicleToDelete;
+
+! Find out how many cubicles there are to delete
+iCubiclesToDeleteNumber = vCubicles.Size();
+
+for(a = 0; a < iCubiclesToDeleteNumber; a += 1){
+  ! Retrieve every created cubicle from the vector that stores it and delete it
+  oCubicleToDelete = vCubicles.Get(a);
+  
+  Delete(oCubicleToDelete);
+}
+
+! Delete non existing cubicles from the vector
+vCubicles.Clear();
