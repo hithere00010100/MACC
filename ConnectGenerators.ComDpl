@@ -1,0 +1,13 @@
+int iCubiclesNumber, a;
+object oCubicle, oGenerator;
+
+! Find out how many cubicles were created
+iCubiclesNumber = vCubicles.Size();
+
+for(a = 0; a < iCubiclesNumber; a += 1){
+  ! Grab every cubicle and make a connection with every generator
+  oCubicle = vCubicles.Get(a);
+  oGenerator = vCreatedGenerators.Get(a);
+  
+  oCubicle:e:obj_id = oGenerator;
+}

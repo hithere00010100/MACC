@@ -27,6 +27,7 @@ IsolateActivePowers.Execute();
 CreateGenerators.Execute();
 SetupGenerators.Execute();
 CreateCubicles.Execute();
+ConnectGenerators.Execute();
 
 DeleteGenerators.Execute();
 DeleteCubicles.Execute();
