@@ -12,8 +12,8 @@ for(a = 0; a < iCreatedGeneratorsNumber; a += 1){
   ! Grab every chosen project generator
   oChosenProjectGenerator = vCreatedGenerators.Get(a);
   
-  ! Set that generator as PV node, with a voltage defined by code and set its power factor
-  oChosenProjectGenerator:e:av_mode = 'constv';
+  ! Set that generator as PQ node, with a voltage defined by code and set its power factor
+  oChosenProjectGenerator:e:av_mode = 'constq';
   oChosenProjectGenerator:e:usetp = 1;
   oChosenProjectGenerator:e:cosn = 1;
   

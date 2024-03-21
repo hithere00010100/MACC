@@ -28,6 +28,7 @@ CreateGenerators.Execute();
 SetupGenerators.Execute();
 CreateCubicles.Execute();
 ConnectGenerators.Execute();
+EstimateLoadFlows.Execute();
 
-DeleteGenerators.Execute();
-DeleteCubicles.Execute();
+!DeleteGenerators.Execute();
+!DeleteCubicles.Execute();
