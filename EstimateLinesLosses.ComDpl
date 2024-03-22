@@ -1,0 +1,18 @@
+double dTotalLosses, dLineLosses;
+object oLine;
+set aLines;
+
+aLines = GetCalcRelevantObjects('*.ElmLne');
+
+! Start a losses counter
+dTotalLosses = 0;
+
+for(oLine = aLines.First(); oLine; oLine = aLines.Next()){
+  ! Grab every line losses and add them to the current accumulated losses
+  dLineLosses = oLine:c:Losses;
+  
+  dTotalLosses += dLineLosses;
+}
+
+! Convert accumulated losses from kW to MW
+dTotalLosses = dTotalLosses / 1000;
